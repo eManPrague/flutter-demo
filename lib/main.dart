@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -54,6 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+
+    if (_counter % 5 == 0) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          child: Platform.isIOS
+              ? _createCupertinoAlertDialog()
+              : _createMaterialAlertDialog());
+    }
   }
 
   @override
@@ -106,4 +118,46 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  AlertDialog _createMaterialAlertDialog() => new AlertDialog(
+        title: new Text('Reset counter'),
+        content: new Text('Do you want to reset counter?'),
+        actions: <Widget>[
+          new MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: new Text('Cancel'),
+          ),
+          new MaterialButton(
+              onPressed: () {
+                setState(() {
+                  _counter = 0;
+                });
+                Navigator.pop(context);
+              },
+              child: new Text('OK')),
+        ],
+      );
+
+  CupertinoAlertDialog _createCupertinoAlertDialog() => new CupertinoAlertDialog(
+        title: new Text('Reset counter'),
+        content: new Text('Do you want to reset counter?'),
+        actions: <Widget>[
+          new CupertinoButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: new Text('Cancel'),
+          ),
+          new CupertinoButton(
+              onPressed: () {
+                setState(() {
+                  _counter = 0;
+                });
+                Navigator.pop(context);
+              },
+              child: new Text('OK')),
+        ],
+      );
 }
