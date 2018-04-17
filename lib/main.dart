@@ -62,9 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
       showDialog(
           context: context,
           barrierDismissible: false,
-          child: Platform.isIOS
-              ? _createCupertinoAlertDialog()
-              : _createMaterialAlertDialog());
+          builder: (BuildContext context) {
+            return Platform.isIOS
+                ? _createCupertinoAlertDialog()
+                : _createMaterialAlertDialog();
+          });
     }
   }
 
